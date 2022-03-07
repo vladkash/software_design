@@ -24,35 +24,25 @@ jobs:
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v2
-      
+
       - name: Setup Java JDK
         uses: actions/setup-java@v3.0.0
         with:
           java-version: 14
           distribution: "zulu"
       - name: Gradle Wrapper Validation
-        uses: gradle/wrapper-validation-action@v1.0.4     
-        
+        uses: gradle/wrapper-validation-action@v1.0.4
+
+      - uses: actions/cache@v2
+        with:
+          path: |
+            ~/.gradle/caches
+            ~/.gradle/wrapper
+          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
+          restore-keys: |
+            ${{ runner.os }}-gradle-
+
       - name: Build
         uses: gradle/gradle-build-action@v2.1.3
         with:
           arguments: build
-          
-      - name: Test
-        uses: gradle/gradle-build-action@v2.1.3
-        with:
-          arguments: test
-          
-      - name: Code coverage
-        uses: gradle/gradle-build-action@v2.1.3
-        with:
-          arguments: koverVerify   
-          
-      - name: Code format
-        uses: gradle/gradle-build-action@v2.1.3
-        with:
-          arguments: ktlintFormat   
-        
-        
-          
-     
