@@ -1,5 +1,10 @@
 package cli.environments
 
+/**
+ * Немутабельная среда выполнения
+ * хранит ключи и значения переменных, а также
+ * может заменить в строке переменные на значения
+ */
 open class Env(protected val vars: MutableMap<String, String>) {
     fun get(key: String) = vars[key]
 
