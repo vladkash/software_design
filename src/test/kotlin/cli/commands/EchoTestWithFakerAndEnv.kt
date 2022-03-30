@@ -9,7 +9,7 @@ internal class EchoTestWithFakerAndEnv : TestWithFakerAndEnv() {
     @Test
     fun runWithStrongQuoting() {
         val content = faker.random.randomString()
-        val command = EchoCommand(content, false)
+        val command = EchoCommand(content)
         val res = command.run("", env).forNextCommand()
         assertEquals(content, res)
     }
@@ -17,7 +17,7 @@ internal class EchoTestWithFakerAndEnv : TestWithFakerAndEnv() {
     @Test
     fun runWithStrongQuotingAndEnv() {
         val content = "${ faker.random.randomString() }$$envKey${ faker.random.randomString() }"
-        val command = EchoCommand(content, false)
+        val command = EchoCommand("'$content'")
         val res = command.run("", env).forNextCommand()
         assertEquals(content, res)
     }
@@ -25,7 +25,7 @@ internal class EchoTestWithFakerAndEnv : TestWithFakerAndEnv() {
     @Test
     fun runWithWeakQuotingAndEnv() {
         val content = "${ faker.random.randomString() }$$envKey${ faker.random.randomString() }"
-        val command = EchoCommand(content, true)
+        val command = EchoCommand(content)
         val res = command.run("", env).forNextCommand()
         assertEquals(env.replaceVars(content), res)
     }

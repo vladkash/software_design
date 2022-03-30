@@ -25,7 +25,7 @@ internal class CatTestWithFakerAndEnv : TestWithFakerAndEnv() {
 
     @Test
     fun runEmptyArg() {
-        val command = CatCommand("", true)
+        val command = CatCommand("")
         val input = faker.random.randomString()
         val res = command.run(input, env).forNextCommand()
         assertEquals(input, res)
@@ -33,7 +33,7 @@ internal class CatTestWithFakerAndEnv : TestWithFakerAndEnv() {
 
     @Test
     fun runWithArgStrongQuoting() {
-        val command = CatCommand(filePath, false)
+        val command = CatCommand(filePath)
         val res = command.run("", env).forNextCommand()
         assertEquals(fileContent, res)
     }
@@ -41,14 +41,14 @@ internal class CatTestWithFakerAndEnv : TestWithFakerAndEnv() {
     @Test
     fun runWithArgWeakQuoting() {
         env.put(envKey, filePath.substring(filePath.length / 2))
-        val command = CatCommand("${filePath.substring(0, filePath.length / 2)}$$envKey", true)
+        val command = CatCommand("${filePath.substring(0, filePath.length / 2)}$$envKey")
         val res = command.run("", env).forNextCommand()
         assertEquals(fileContent, res)
     }
 
     @Test
     fun runWithIncorrectArg() {
-        val command = CatCommand(faker.random.randomString(), true)
+        val command = CatCommand(faker.random.randomString())
         assertThrows<CommandRunningException> { command.run("", env).forNextCommand() }
     }
 }

@@ -2,7 +2,8 @@ package cli.commands
 
 import java.io.File
 
-abstract class FileCommand : Command {
+abstract class FileCommand(arg: String) :
+    CommandWithArgs(arg) {
     protected fun readFile(path: String): String {
         val file = File(path)
         if (!file.exists()) {

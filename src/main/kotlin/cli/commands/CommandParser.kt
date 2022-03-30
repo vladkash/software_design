@@ -5,7 +5,7 @@ class CommandParser {
      * Метод парсинга команды из строки.
      * Сначала пробует найти присвоение переменной,
      * после смотрит на первое слово в команде и на основании
-     * него подставляет нужную команду. Распознает кавычки у аргументов
+     * него подставляет нужную команду
      * @param raw строка, в которой нужно найти команду
      */
     fun parse(raw: String): Command {
@@ -17,32 +17,15 @@ class CommandParser {
         }
 
         val strCommand = raw.trim().takeWhile { it != ' ' }
-        var arg = raw.replace(strCommand, "").trim()
-        var weakQuoting = false
 
-        if (arg.length >= 2) {
-            val first = arg.first()
-            val last = arg.last()
-
-            if (
-                (first == '\'' && last == '\'') ||
-                (first == '"' && last == '"')
-            ) {
-                arg = arg.drop(1).dropLast(1)
-                if (first == '"') {
-                    weakQuoting = true
-                }
-            } else {
-                weakQuoting = true
-            }
-        }
+        val arg = raw.replace(strCommand, "").trim()
 
         return when (strCommand) {
-            "cat" -> CatCommand(arg, weakQuoting)
-            "echo" -> EchoCommand(arg, weakQuoting)
+            "cat" -> CatCommand(arg)
+            "echo" -> EchoCommand(arg)
             "exit" -> ExitCommand()
             "pwd" -> PwdCommand()
-            "wc" -> WcCommand(arg, weakQuoting)
+            "wc" -> WcCommand(arg)
             else -> ExternalProcessCommand(raw)
         }
     }

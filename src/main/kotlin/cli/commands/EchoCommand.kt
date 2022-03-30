@@ -4,7 +4,11 @@ import cli.environments.Env
 import cli.outputs.ConsoleOutput
 import cli.outputs.Output
 
-class EchoCommand(private val arg: String, private val weakQuoting: Boolean) : Command {
+class EchoCommand(arg: String) :
+    CommandWithArgs(arg) {
+    override val allowedFlags: Set<CommandFlag>
+        get() = emptySet()
+
     override fun run(input: String, env: Env): Output {
         return ConsoleOutput(
             if (weakQuoting) {
