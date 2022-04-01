@@ -23,6 +23,7 @@ class CommandParser {
         return when (strCommand) {
             "cat" -> CatCommand(arg)
             "echo" -> EchoCommand(arg)
+            "grep" -> GrepCommand(arg)
             "exit" -> ExitCommand()
             "pwd" -> PwdCommand()
             "wc" -> WcCommand(arg)
