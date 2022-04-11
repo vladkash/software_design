@@ -25,31 +25,31 @@ internal class WcTestWithFakerAndEnv : TestWithFakerAndEnv() {
 
     @Test
     fun runEmptyArg() {
-        val command = WcCommand("")
+        val command = WcCommand("", env)
         val input = faker.random.randomString()
-        val res = command.run(input, env).forNextCommand()
+        val res = command.run(input).forNextCommand()
         assertEquals(getCounts(input), res)
     }
 
     @Test
     fun runWithArgStrongQuoting() {
-        val command = WcCommand(filePath)
-        val res = command.run("", env).forNextCommand()
+        val command = WcCommand(filePath, env)
+        val res = command.run("").forNextCommand()
         assertEquals(getCounts(fileContent), res)
     }
 
     @Test
     fun runWithArgWeakQuoting() {
         env.put(envKey, filePath.substring(filePath.length / 2))
-        val command = WcCommand("${filePath.substring(0, filePath.length / 2)}$$envKey")
-        val res = command.run("", env).forNextCommand()
+        val command = WcCommand("${filePath.substring(0, filePath.length / 2)}$$envKey", env)
+        val res = command.run("").forNextCommand()
         assertEquals(getCounts(fileContent), res)
     }
 
     @Test
     fun runWithIncorrectArg() {
-        val command = WcCommand(faker.random.randomString())
-        assertThrows<CommandRunningException> { command.run("", env).forNextCommand() }
+        val command = WcCommand(faker.random.randomString(), env)
+        assertThrows<CommandRunningException> { command.run("").forNextCommand() }
     }
 
     private fun getCounts(string: String): String {

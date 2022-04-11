@@ -9,5 +9,8 @@ abstract class TestWithFakerAndEnv {
 
     protected val envKey = faker.random.randomString()
 
-    protected val env = MutableEnv(mutableMapOf(envKey to faker.random.randomString()))
+    protected val env = MutableEnv(
+        location = System.getProperty("user.dir"),
+        vars = mutableMapOf(envKey to faker.random.randomString())
+    )
 }

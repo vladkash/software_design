@@ -9,7 +9,7 @@ internal class ExitTestWithFakerAndEnv : TestWithFakerAndEnv() {
 
     @Test
     fun run() {
-        val statusCode = SystemLambda.catchSystemExit { ExitCommand().run("", env) }
+        val statusCode = SystemLambda.catchSystemExit { ExitCommand(env).run("") }
         assertEquals(0, statusCode)
     }
 }

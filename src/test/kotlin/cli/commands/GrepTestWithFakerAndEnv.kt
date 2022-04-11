@@ -19,29 +19,29 @@ internal class GrepTestWithFakerAndEnv : TestWithFakerAndEnv() {
 
     @Test
     fun runEmptyArg() {
-        val command = GrepCommand("")
-        val res = command.run(content, env).forNextCommand()
+        val command = GrepCommand("", env)
+        val res = command.run(content).forNextCommand()
         assertEquals(content.lines().size, res.lines().size)
     }
 
     @Test
     fun runFullWords() {
-        val command = GrepCommand("-w test")
-        val res = command.run(content, env).forNextCommand()
+        val command = GrepCommand("-w test", env)
+        val res = command.run(content).forNextCommand()
         assertEquals(content.lines().size / 2, res.lines().size)
     }
 
     @Test
     fun runWithTwoAfterFullWords() {
-        val command = GrepCommand("-w -A 2 test")
-        val res = command.run(content, env).forNextCommand()
+        val command = GrepCommand("-w -A 2 test", env)
+        val res = command.run(content).forNextCommand()
         assertEquals(content.lines().size, res.lines().size)
     }
 
     @Test
     fun runWithTwoAfterFullWordsIgnoreCase() {
-        val command = GrepCommand("-w -A 2 -i TesT")
-        val res = command.run(content, env).forNextCommand()
+        val command = GrepCommand("-w -A 2 -i TesT", env)
+        val res = command.run(content).forNextCommand()
         assertEquals(content.lines().size, res.lines().size)
     }
 }
