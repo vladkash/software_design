@@ -9,8 +9,8 @@ internal class PwdTestWithFakerAndEnv : TestWithFakerAndEnv() {
     @Test
     fun run() {
         val pwd = faker.random.randomString()
-        env.put("PWD", pwd)
-        val res = PwdCommand().run("", env)
+        env.location = pwd
+        val res = PwdCommand(env).run("")
         assertEquals(pwd, res.forNextCommand())
     }
 }

@@ -22,19 +22,21 @@ class Cli(private val env: MutableEnv) {
 
         str.split(';').forEach { pipeline ->
 
-            val commands = pipeline.split('|').map { commandParser.parse(it.trim()) }
+            val commands = pipeline.split('|')
+                .map { commandParser.parse(it.trim()) }
+                .map { it(env) } // передаем в каждую команду ссылку на environment
 
             try {
-                var output: Output = commands.first().run("", env)
+                var output: Output = commands.first().run("")
 
                 // изменяются переменные среды, только если они
                 // одной командой, не в пайплайне по примеру bash
                 if (commands.size == 1) {
-                    commands.first().modifyEnv(env)
+                    commands.first().modifyEnv()
                 }
 
                 for (i in 1 until commands.size) {
-                    output = commands[i].run(output.forNextCommand(), env)
+                    output = commands[i].run(output.forNextCommand())
                 }
 
                 output.sendOut()

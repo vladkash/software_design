@@ -1,18 +1,20 @@
 package cli.commands
 
-import cli.environments.Env
+import cli.environments.MutableEnv
 import cli.outputs.ConsoleOutput
 import cli.outputs.Output
 
-open class CatCommand(arg: String) :
-    FileCommand(arg) {
+open class CatCommand(
+    arg: String,
+    environment: MutableEnv
+) : FileCommand(arg, environment) {
 
     override val allowedFlags: Set<CommandFlag>
         get() = emptySet()
 
-    override fun run(input: String, env: Env): Output {
-        return ConsoleOutput(
-            if (arg.isEmpty()) input else readFile(if (weakQuoting) env.replaceVars(arg) else arg)
-        )
-    }
+    override fun run(input: String): Output =
+        when {
+            arg.isEmpty() -> ConsoleOutput(input)
+            else -> ConsoleOutput(readFile(arg))
+        }
 }

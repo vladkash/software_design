@@ -1,11 +1,15 @@
 package cli.commands
 
-import cli.environments.Env
+import cli.environments.MutableEnv
 import cli.outputs.ConsoleOutput
 import cli.outputs.Output
 import java.lang.Integer.max
 
-class GrepCommand(arg: String) : CommandWithArgs(arg) {
+class GrepCommand(
+    arg: String,
+    environment: MutableEnv
+) : CommandWithArgs(arg, environment) {
+
     companion object {
         const val IGNORE_CASE_FLAG = "i"
         const val FULL_WORDS_FLAG = "w"
@@ -19,12 +23,12 @@ class GrepCommand(arg: String) : CommandWithArgs(arg) {
             CommandFlag(LINES_AFTER_MATCH_FLAG, true)
         )
 
-    override fun run(input: String, env: Env): Output {
+    override fun run(input: String): Output {
         val options = mutableSetOf<RegexOption>()
         if (flags.containsKey(IGNORE_CASE_FLAG)) {
             options.add(RegexOption.IGNORE_CASE)
         }
-        var pattern = if (weakQuoting) env.replaceVars(arg) else arg
+        var pattern = arg
         if (flags.containsKey(FULL_WORDS_FLAG)) {
             pattern = "\\b($pattern)\\b"
         }
