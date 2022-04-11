@@ -53,6 +53,15 @@ ktlint {
     }
 }
 
+sourceSets {
+    main {
+        java.setSrcDirs(listOf("src/main/kotlin"))
+    }
+    test {
+        java.setSrcDirs(listOf("src/test/kotlin"))
+    }
+}
+
 application {
     mainClass.set("MainKt")
 }
