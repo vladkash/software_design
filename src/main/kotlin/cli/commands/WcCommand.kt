@@ -1,15 +1,19 @@
 package cli.commands
 
-import cli.environments.Env
+import cli.environments.MutableEnv
 import cli.outputs.ConsoleOutput
 import cli.outputs.Output
 
-class WcCommand(arg: String) : FileCommand(arg) {
+class WcCommand(
+    arg: String,
+    environment: MutableEnv
+) : FileCommand(arg, environment) {
+
     override val allowedFlags: Set<CommandFlag>
         get() = emptySet()
 
-    override fun run(input: String, env: Env): Output {
-        val content = if (arg.isEmpty()) input else readFile(if (weakQuoting) env.replaceVars(arg) else arg)
+    override fun run(input: String): Output {
+        val content = if (arg.isEmpty()) input else readFile(arg)
         return ConsoleOutput(getCounts(content))
     }
 

@@ -7,7 +7,10 @@ import cli.environments.MutableEnv
  * команды, поступающие от пользователя
  */
 fun main() {
-    val cli = Cli(MutableEnv(System.getenv().toMutableMap()))
+    val location = System.getProperty("user.dir")
+    val variables = System.getenv()
+    val environment = MutableEnv(location, variables)
+    val cli = Cli(environment)
     while (true) {
         print(">>> ")
         val command = readln()

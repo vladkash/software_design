@@ -1,5 +1,7 @@
 package cli.commands
 
+import cli.environments.MutableEnv
+
 class CommandParser {
     /**
      * Метод парсинга команды из строки.
@@ -8,26 +10,39 @@ class CommandParser {
      * него подставляет нужную команду
      * @param raw строка, в которой нужно найти команду
      */
-    fun parse(raw: String): Command {
+    fun parse(raw: String): (MutableEnv) -> Command {
 
         val assignmentRegexRes = Regex("(\\w+)\\s*=\\s*(\\w+)").matchEntire(raw)
 
         if (assignmentRegexRes?.groupValues != null) {
-            return AssignEnvCommand(assignmentRegexRes.groupValues[1], assignmentRegexRes.groupValues[2])
+            return { env ->
+                AssignEnvCommand(
+                    assignmentRegexRes.groupValues[1],
+                    assignmentRegexRes.groupValues[2],
+                    env
+                )
+            }
         }
 
         val strCommand = raw.trim().takeWhile { it != ' ' }
 
         val arg = raw.replace(strCommand, "").trim()
 
-        return when (strCommand) {
-            "cat" -> CatCommand(arg)
-            "echo" -> EchoCommand(arg)
-            "grep" -> GrepCommand(arg)
-            "exit" -> ExitCommand()
-            "pwd" -> PwdCommand()
-            "wc" -> WcCommand(arg)
-            else -> ExternalProcessCommand(raw)
+        when (strCommand) {
+            "exit" -> return ::ExitCommand
+            "pwd" -> return ::PwdCommand
         }
+
+        val buildCommand = when (strCommand) {
+            "cat" -> ::CatCommand
+            "echo" -> ::EchoCommand
+            "grep" -> ::GrepCommand
+            "wc" -> ::WcCommand
+            "ls" -> ::LsCommand
+            "cd" -> ::CdCommand
+            else -> return { env -> ExternalProcessCommand(raw, env) }
+        }
+
+        return { env -> buildCommand(arg, env) }
     }
 }

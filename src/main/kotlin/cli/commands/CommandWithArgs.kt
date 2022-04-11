@@ -1,14 +1,20 @@
 package cli.commands
 
-abstract class CommandWithArgs(protected var arg: String) : Command {
+import cli.environments.MutableEnv
+
+abstract class CommandWithArgs(
+    protected var arg: String,
+    final override val environment: MutableEnv
+) : Command() {
 
     protected abstract val allowedFlags: Set<CommandFlag>
     protected val flags: Map<String, String>
-    protected val weakQuoting: Boolean
 
     init {
         flags = extractFlags()
-        weakQuoting = checkQuoting()
+        if (checkQuoting()) {
+            arg = environment.replaceVars(arg)
+        }
     }
 
     // возвращает флаги потенциальные флаги команды
