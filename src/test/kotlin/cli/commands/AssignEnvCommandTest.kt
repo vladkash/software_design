@@ -12,7 +12,7 @@ internal class AssignEnvCommandTest : TestWithFakerAndEnv() {
         val value = faker.random.randomString()
         val command = AssignEnvCommand(key, value)
         command.modifyEnv(env)
-        assert(env.has(key))
-        assertEquals(value, env.get(key))
+        assert(env.contains(key))
+        assertEquals(value, env[key])
     }
 }

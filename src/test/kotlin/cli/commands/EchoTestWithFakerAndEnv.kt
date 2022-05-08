@@ -1,6 +1,7 @@
 package cli.commands
 
 import cli.TestWithFakerAndEnv
+import cli.environments.replaceVars
 import org.junit.jupiter.api.Test
 import kotlin.test.assertEquals
 

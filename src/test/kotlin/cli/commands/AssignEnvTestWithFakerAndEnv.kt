@@ -14,7 +14,7 @@ internal class AssignEnvTestWithFakerAndEnv : TestWithFakerAndEnv() {
         val command = AssignEnvCommand(key, value)
 
         command.modifyEnv(env)
-        assertTrue(env.has(key))
-        assertEquals(value, env.get(key))
+        assertTrue(env.contains(key))
+        assertEquals(value, env[key])
     }
 }

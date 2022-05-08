@@ -40,7 +40,6 @@ class EchoCommand(private val arg: String, private val weakQuoting: Boolean) : C
             }
         )
     }
-
 }
 
 /**

@@ -10,8 +10,8 @@ internal class MutableEnvTest : TestWithFakerAndEnv() {
     fun testEnvMethods() {
         val key = faker.random.randomString()
         val value = faker.random.randomString()
-        env.put(key, value)
-        assert(env.has(key))
-        assertEquals(value, env.get(key))
+        env[key] = value
+        assert(env.contains(key))
+        assertEquals(value, env[key])
     }
 }
