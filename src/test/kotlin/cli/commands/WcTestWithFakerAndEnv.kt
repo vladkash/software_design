@@ -25,7 +25,7 @@ internal class WcTestWithFakerAndEnv : TestWithFakerAndEnv() {
 
     @Test
     fun runEmptyArg() {
-        val command = WcCommand("", true)
+        val command = WcCommand("")
         val input = faker.random.randomString()
         val res = command.run(input, env).forNextCommand()
         assertEquals(getCounts(input), res)
@@ -33,7 +33,7 @@ internal class WcTestWithFakerAndEnv : TestWithFakerAndEnv() {
 
     @Test
     fun runWithArgStrongQuoting() {
-        val command = WcCommand(filePath, false)
+        val command = WcCommand(filePath)
         val res = command.run("", env).forNextCommand()
         assertEquals(getCounts(fileContent), res)
     }
@@ -41,14 +41,14 @@ internal class WcTestWithFakerAndEnv : TestWithFakerAndEnv() {
     @Test
     fun runWithArgWeakQuoting() {
         env.put(envKey, filePath.substring(filePath.length / 2))
-        val command = WcCommand("${filePath.substring(0, filePath.length / 2)}$$envKey", true)
+        val command = WcCommand("${filePath.substring(0, filePath.length / 2)}$$envKey")
         val res = command.run("", env).forNextCommand()
         assertEquals(getCounts(fileContent), res)
     }
 
     @Test
     fun runWithIncorrectArg() {
-        val command = WcCommand(faker.random.randomString(), true)
+        val command = WcCommand(faker.random.randomString())
         assertThrows<CommandRunningException> { command.run("", env).forNextCommand() }
     }
 

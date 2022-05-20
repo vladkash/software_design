@@ -1,5 +1,4 @@
 import cli.Cli
-import cli.environments.MutableEnv
 
 /**
  * Входная точка программы
@@ -7,7 +6,7 @@ import cli.environments.MutableEnv
  * команды, поступающие от пользователя
  */
 fun main() {
-    val cli = Cli(MutableEnv(System.getenv().toMutableMap()))
+    val cli = Cli(System.getenv().toMutableMap())
     while (true) {
         print(">>> ")
         val command = readln()

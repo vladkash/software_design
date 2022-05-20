@@ -6,9 +6,9 @@ name: CI
 on:
   # Triggers the workflow on push or pull request events but only for the master branch
   push:
-    branches: [ master, hw1, hw1-dev ]
+    branches: [ master, hw1, hw1-dev, hw2, hw2-dev ]
   pull_request:
-    branches: [ master, hw1, hw1-dev ]
+    branches: [ master, hw1, hw1-dev, hw2, hw2-dev ]
 
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
