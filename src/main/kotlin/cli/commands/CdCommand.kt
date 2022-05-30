@@ -17,7 +17,6 @@ class CdCommand(
             arg.isEmpty() -> System.getProperty("user.home")
             else -> arg
         }
-        environment.put("PWD", newLocation)
         environment.location = newLocation
         return ConsoleOutput("")
     }
